@@ -1,6 +1,6 @@
 # TODO
-- Complete exercises for week 3
 - Find a better way to keep track of exercises. (assume this file is never up ot date)
+- Update exercises from week 1-3 with better file-names to better suit the styleguide (short names)
 
 # Reminders
 - Keep test-functions in a separate file beginning with "test_"

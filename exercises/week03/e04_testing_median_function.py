@@ -1,5 +1,5 @@
 def median(data):
-	"""Returns the median of a dataset."""
+	"""Return the median value of a dataset."""
 	if not isinstance(data,(list,tuple)):
 		raise TypeError('Input must be a list')
 	if len(data) < 1:

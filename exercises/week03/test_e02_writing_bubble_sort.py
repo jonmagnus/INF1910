@@ -13,9 +13,11 @@ def test_bubble_sort_arguments():
 
 def test_bubble_sort():
 	"""Test the correctness of bubble_sort."""
-	l = [4,1,7,16,7,26,6167,1,54]
-	nt.assert_items_equal(bubble_sort(l),sorted(l))
-	nt.assert_items_equal(l,[4,1,7,16,7,26,6167,1,54])
+	tl = [4,1,7,16,7,26,6167,1,54]
+	for p in zip(bubble_sort(tl),sorted(tl)):
+		nt.assert_equal(p[0],p[1])
+	for p in zip(tl,[4,1,7,16,7,26,6167,1,54]):
+		nt.assert_equal(p[0],p[1])
 	nt.assert_items_equal(bubble_sort([]),[])
 	nt.assert_items_equal(bubble_sort([-10000]),[-10000])
 

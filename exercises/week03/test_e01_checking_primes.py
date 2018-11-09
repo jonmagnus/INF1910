@@ -1,5 +1,5 @@
 import nose.tools as nt
-from E01_checking_primes import is_prime
+from e01_checking_primes import is_prime
 
 @nt.raises(TypeError)
 def test_is_prime_type():

@@ -12,6 +12,8 @@ class Pendelum:
         self._t = None
         self._theta = None
         self._omega = None
+        self._x = None
+        self._y = None
 
     def __call__(self,t,y):
         """Return the RHS of the ODE"""
@@ -29,6 +31,8 @@ class Pendelum:
         self._t = sol.t
         self._theta = sol.y[0]
         self._omega = sol.y[1]
+        self._x = [self.L*np.sin(theta) for theta in self._theta]
+        self._y = [-self.L*np.cos(theta) for theta in self._theta]
 
     @property
     def t(self):
@@ -48,3 +52,14 @@ class Pendelum:
              raise UnsolvedError("This ODE has not yet been solved")
         return self._omega
 
+    @property
+    def x(self):
+        if self._x is None:
+            raise UnsolvedError("This ODE has not yet been solved")
+        return self._x
+
+    @property
+    def y(self):
+        if self._y is None:
+            raise UnsolvedError("This ODE has not yet been solved")
+        return self._y

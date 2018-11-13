@@ -44,6 +44,13 @@ def test_solve():
     for omega in p.omega:
         nt.assert_almost_equal(omega,0)
 
+def test_lenght_constant():
+    """Test if the length is preserved after changing coordinates."""
+    p = Pendelum()
+    p.solve(y0=(pi/2,0),T=10,dt=.1)
+    for x,y in zip(p.x,p.y):
+        nt.assert_almost_equal(x*x + y*y,p.L*p.L)
+
 if __name__ == '__main__':
     import nose
     nose.run()

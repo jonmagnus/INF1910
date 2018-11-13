@@ -20,15 +20,15 @@ class Pendelum:
         omega_ = -g*np.sin(theta)/self.L
         return (theta_,omega_)
     
-    def solve(y0,T,dt,angles='rad'):
+    def solve(self,y0,T,dt,angles='rad'):
         if angles == 'deg':
-            y0 = (y[0]*np.pi/180,y[1]*np.pi/180)
+            y0 = (y0[0]*np.pi/180,y0[1]*np.pi/180)
         n = int(T/dt)
         t = np.linspace(0,T,n+1)
-        sol = solve_ivp(fun=self,t_span=T,y0=y0,t_eval=t)
+        sol = solve_ivp(fun=self,t_span=(0,T),y0=y0,t_eval=t)
         self._t = sol.t
         self._theta = sol.y[0]
-        slef._omega = sol.y[1]
+        self._omega = sol.y[1]
 
     @property
     def t(self):

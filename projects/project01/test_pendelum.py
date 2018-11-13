@@ -32,6 +32,18 @@ def test_omega():
     p = Pendelum()
     p.omega()
 
+def test_solve():
+    """Test if solution-arrays of ODE are reasonable."""
+    p = Pendelum()
+    p.solve((0,0),T=10,dt=.1)
+    t = np.linspace(0,10,101)
+    for z in zip(p.t,t):
+        nt.assert_almost_equal(z[0],z[1])
+    for theta in p.theta:
+        nt.assert_almost_equal(theta,0)
+    for omega in p.omega:
+        nt.assert_almost_equal(omega,0)
+
 if __name__ == '__main__':
     import nose
     nose.run()

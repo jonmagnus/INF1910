@@ -16,7 +16,7 @@ class ExponentialDecay:
         n = int(T/dt)
         t = np.linspace(0,T,n+1)
         sol = solve_ivp(fun=self,t_span=[0,T],y0=(u0,),t_eval=t)
-        return sol.t,sol.y[0]
+        return sol.t,sol.y[0]   # There is only one y-value to return
 
 if __name__ == '__main__':
     decay_model = ExponentialDecay(.4)

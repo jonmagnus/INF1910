@@ -1,0 +1,2 @@
+class UnsolvedError(Exception):
+    pass

@@ -110,7 +110,7 @@ class DampenedPendelum(Pendelum):
  
 
 if __name__ == '__main__':
-    pend = DampenedPendelum()
+    pend = DampenedPendelum(B=1)
     pend.solve((np.pi/2,0),3,.01)
     
     plt.figure()

@@ -2,7 +2,7 @@ import nose.tools as nt
 import numpy as np
 from pendelum import Pendelum
 from math import pi
-from ode_exeptions import UnsolvedError
+from ode_exceptions import UnsolvedError
 
 def test_init():
     """Test call of Pendelum-class"""

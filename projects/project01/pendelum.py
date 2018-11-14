@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import solve_ivp
-from ode_exeptions import UnsolvedError
+from ode_exceptions import UnsolvedError
 
 g = 9.81
 

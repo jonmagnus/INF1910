@@ -11,6 +11,21 @@ class DoublePendelum:
         self.L1 = L1
         self.M2 = M2
         self.L2 = L2
+        self._t = None
+        self._theta1 = None
+        self._omega1 = None
+        self._theta2 = None
+        self._omega2 = None
+        self._x1 = None
+        self._y1 = None
+        self._x2 = None
+        self._y2 = None
+        self._potential = None
+        self._vx1 = None
+        self._vy1 = None
+        self._vx2 = None
+        self._vy2 = None
+        self._kinetic = None
 
     def __call__(self,t,y):
         theta1,omega1,theta2,omega2 = y
@@ -50,7 +65,7 @@ class DoublePendelum:
         self._x1 = [self.L1*np.sin(theta1) for theta1 in self._theta1]
         self._y1 = [-self.L1*np.cos(theta1) for theta1 in self._theta1]
         self._x2 = [x1 + self.L2*np.sin(theta2) for x1,theta2 in zip(self._x1,self._theta2)]
-        self._y2 = [y2 - self.L2*np.cos(theta2) for y1,theta2 in zip(self._y1,self._theta2)]
+        self._y2 = [y1 - self.L2*np.cos(theta2) for y1,theta2 in zip(self._y1,self._theta2)]
         self._potential = [self.M1*g*(y1 + self.L1) + self.M2*g*(y2 + self.L1 + self.L2) \
                            for y1,y2 in zip(self._y1,self._y2)]
         self._vx1 = np.gradient(self._x1,self._t)
@@ -67,17 +82,29 @@ class DoublePendelum:
         return self._t
     
     @property
-    def theta(self):
-        if self._theta is None:
+    def theta1(self):
+        if self._theta1 is None:
             raise UnsolvedError('This ODE has not yet been solved')
-        return self._theta
+        return self._theta1
     
     @property
-    def omega(self):
-        if self._omega is None:
+    def omega1(self):
+        if self._omega1 is None:
             raise UnsolvedError('This ODE has not yet been solved')
-        return self._omega
+        return self._omega1
     
+    @property
+    def theta2(self):
+        if self._theta2 is None:
+            raise UnsolvedError('This ODE has not yet been solved')
+        return self._theta2
+    
+    @property
+    def omega2(self):
+        if self._omega2 is None:
+            raise UnsolvedError('This ODE has not yet been solved')
+        return self._omega2
+
     @property
     def x1(self):
         if self._x1 is None:
@@ -140,31 +167,15 @@ class DoublePendelum:
 
 
 if __name__ == '__main__':
-    pend = DoublePendelum(L2=2)
-    pend.solve((np.pi/2,0,-np.pi/2),3,.01)
+    pend = DoublePendelum(L1=2)
+    pend.solve((np.pi/2,0,-np.pi/2,0),3,.01)
     
-    plt.figure()
     plt.title('Position')
     plt.xlabel('x / m')
     plt.ylabel('y / m')
     plt.axis('equal')
-    plt.plot((pend.x1,pend.x2),(pend.y1,pend.y2))
+    plt.plot(pend.x1,pend.y1)
+    plt.plot(pend.x2,pend.y2)
     
-    """
-    plt.figure()
-    plt.subplot(2,1,1)
-    plt.title('Angle')
-    plt.xlabel('time / s')
-    plt.ylabel('angle')
-    plt.plot(pend.t,pend.theta)
-
-    plt.subplot(2,1,2)
-    plt.title('Energy')
-    plt.xlabel('time / s')
-    plt.ylabel('energy / J')
-    plt.plot(pend.t,pend.potential,label='Potential')
-    plt.plot(pend.t,pend.kinetic,label='Kinetic')
-    """
-    plt.legend()
     plt.show()
 

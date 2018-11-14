@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.animation as animation
 from scipy.integrate import solve_ivp
 from ode_exceptions import UnsolvedError
 
@@ -57,6 +58,7 @@ class DoublePendelum:
         n = int(T/dt)
         t = np.linspace(0,T,n+1)
         sol = solve_ivp(fun=self,t_span=(0,T),y0=y0,t_eval=t,method='Radau')
+        self._dt = dt
         self._t = sol.t
         self._theta1 = sol.y[0]
         self._omega1 = sol.y[1]
@@ -165,11 +167,50 @@ class DoublePendelum:
             raise UnsolvedError('This ODE has not yet been solved')
         return self._kinetic
 
+    def create_animation(self):
+        self.init_frame()
+        
+    def init_frame(self):
+        # Create empty figure
+        fig = plt.figure()
+        
+        # Configure figure
+        plt.axis('equal')
+        plt.axis('off')
+        L = self.L1 + self.L2
+        plt.axis((-1.3*L,1.3*L,
+                  -1.3*L,1.3*L))
+
+        # Make an 'empty' plot object to be updated throughout the animation
+        self.pendelums, = plt.plot([],[],'o-',lw=2)
+
+        # Call FuncAnimation
+        self.animation = animation.FuncAnimation(
+                fig,self._next_frame,
+                frames=np.arange(len(self.x1)),
+                repeat=None,
+                interval=1000*self._dt,
+                blit=True)
+
+    def _next_frame(self,i):
+        #print ('current_frame: ',i)
+        self.pendelums.set_data((0,self.x1[i],self.x2[i]),
+                                (0,self.y1[i],self.y2[i]))
+        return self.pendelums,
+
+    def show_animation(self):
+        plt.show()
+
+    def save_animation(self,filename,fps=60):
+        #Writer = animation.writers['ffmpeg']
+        #writer = Writer(fps=fps)
+        #self.animation.save(filename,writer=writer)
+        self.animation.save(filename,fps=fps)
 
 if __name__ == '__main__':
     pend = DoublePendelum(L1=2)
-    pend.solve((np.pi/2,0,-np.pi/2,0),3,.01)
-    
+    pend.solve((np.pi/2,0,-np.pi/2,0),3,.1)
+
     plt.title('Position')
     plt.xlabel('x / m')
     plt.ylabel('y / m')
@@ -179,3 +220,7 @@ if __name__ == '__main__':
     
     plt.show()
 
+    pend.solve((np.pi/2,0,-np.pi/2,0),10,1/60)
+
+    pend.create_animation()
+    pend.save_animation('example_simulation.mp4')

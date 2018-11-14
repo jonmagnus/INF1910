@@ -193,7 +193,6 @@ class DoublePendelum:
                 blit=True)
 
     def _next_frame(self,i):
-        #print ('current_frame: ',i)
         self.pendelums.set_data((0,self.x1[i],self.x2[i]),
                                 (0,self.y1[i],self.y2[i]))
         return self.pendelums,
@@ -202,9 +201,6 @@ class DoublePendelum:
         plt.show()
 
     def save_animation(self,filename,fps=60):
-        #Writer = animation.writers['ffmpeg']
-        #writer = Writer(fps=fps)
-        #self.animation.save(filename,writer=writer)
         self.animation.save(filename,fps=fps)
 
 if __name__ == '__main__':

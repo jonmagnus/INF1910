@@ -34,8 +34,9 @@ int main()
 
 	p.print();
 
-	printf("p(%lf)=%lf\n",(double)0,p(0));
-	printf("p(%lf)=%lf\n",(double)1,p(1));
+	printf("p(%lf)=%lf\n",-2.,p(-2));
+	printf("p(%lf)=%lf\n",0.,p(0));
+	printf("p(%lf)=%lf\n",2.,p(2));
 
 	return 0;
 }

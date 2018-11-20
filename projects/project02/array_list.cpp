@@ -10,12 +10,14 @@ private:
 
 	void resize(int n)
 	{
-		capacity = n;
+		for (capacity = 1; capacity < n; capacity *= 2);
 		int *tmp = new int[capacity];
 		for (int i = 0; i < size; i++) tmp[i] = data[i];
 		delete[] data;
 		data = tmp;
 	}
+
+	void shrink_to_fit() {resize(size);}
 
 public:
 	ArrayList() {size = 0; capacity = 1; data = new int[capacity];}
@@ -37,7 +39,7 @@ public:
 
 	void insert(int val, int idx)
 	{
-		if (idx > size) throw out_of_range("indexError");
+		if (idx < 0 || idx > size) throw out_of_range("IndexError");
 		if (idx == size) {append(val); return;}
 		
 		int pre_val = data[idx];
@@ -46,7 +48,26 @@ public:
 			data[i] ^= pre_val, pre_val ^= data[i];
 		append(pre_val);
 	}
-		
+
+	void remove(int idx)
+	{
+		if (idx < 0 || idx >= size) throw out_of_range("IndexError");
+		for (int i = idx; i < size - 1; i++) data[i] = data[i+1];
+		size--;
+		if (4*size < capacity) shrink_to_fit();
+	}
+
+	int pop(int idx)
+	{
+		if (idx < 0 || idx >= size) throw out_of_range("IndexError");
+		int val = data[idx];
+		for (int i = idx; i < size - 1; i++) data[i] = data[i+1];
+		size--;
+		if (4*size < capacity) shrink_to_fit();
+		return val;
+	}
+
+	int pop() {return pop(size - 1);}
 
 	void print()
 	{

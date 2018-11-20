@@ -4,9 +4,10 @@ using namespace std;
 
 struct Node 
 {
-	int val, *next, *prev;
-	Node(int val_ = 0, int *next_ = nullptr, int *prev_ = nullptr) : val(val_), next(next_), prev(prev_) {}
-}
+	int val;
+	Node *next, *prev;
+	Node(int val_ = 0, Node *next_ = nullptr, Node *prev_ = nullptr) : val(val_), next(next_), prev(prev_) {}
+};
 
 class LinkedList
 {
@@ -18,26 +19,28 @@ public:
 	~LinkedList()
 	{
 		if (size == 0) return;
-		Node cur = head;
+		Node *cur = head;
 		while (cur->next != nullptr)
 		{
 			delete cur->prev;
 			cur = cur->next;
 		}
-		delete head, tail;
+		delete head;
+		delete tail;
 	}
 
 	void append(int val)
 	{
 		Node *tmp = new Node(val,nullptr,tail);
-		tail->next = tmp;
+		if (tail != nullptr) tail->next = tmp;
+		else head = tmp;
 		tail = tmp;
 		size++;
 	}
 
 	void insert(int val, int idx)
 	{
-		if (idx < 1 || idx > size) throw out_of_range("IndexError");
+		if (idx < 0 || idx > size) throw out_of_range("IndexError");
 		if (size == 0)
 		{
 			head = tail = new Node(val);
@@ -57,9 +60,30 @@ public:
 			cur->prev = tmp;
 		}
 		size++;
+	
 	}
 	
-		
+	int pop(int idx)
+	{
+		if (idx < 0 || idx >= size) throw out_of_range("IndexError");
+		Node *cur = head;
+		for (int i = 0; i < idx; i++) cur = cur->next;
+		if (cur->prev != nullptr)
+			cur->prev->next = cur->next;
+		else
+			head = cur->next;
+		if (cur->next != nullptr)
+			cur->next->prev = cur->prev;
+		else
+			tail = cur->prev;
+		int val = cur->val;
+		delete cur;
+		size--;
+		return val;
+	}
+
+	int pop() {return pop(size-1);}
+	void remove(int idx) {pop(idx);}
 
 	void print()
 	{
@@ -83,10 +107,24 @@ public:
 		for (int i = 0; i < idx; i++) cur = cur->next;
 		return cur->val;
 	}
-}
+};
 
 int main()
 {
+	printf("Running main\n");
+	LinkedList list;
+	printf("Initialized\n");
+	for (int i = 0; i < 10; i++) list.append(i);
+	list.print();
+	list.pop();
+	list.print();
+	list.pop(0);
+	list.print();
+	list.insert(10,0);
+	list.print();
+	list.insert(-10,5);
+	list.print();
 
 	return 0;
 }
+

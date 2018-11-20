@@ -77,7 +77,7 @@ public:
 	}
 	
 	int length() {return size;}
-	int operator[] (int idx)
+	int &operator[] (int idx)
 	{
 		if (idx < 1 || idx >= size) throw out_of_range("IndexError");
 		return data[idx];

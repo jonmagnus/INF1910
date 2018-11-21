@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <stdexcept>
+#include <vector>
 using namespace std;
 
 struct Node
@@ -16,6 +17,11 @@ private:
 	Node *head;
 public:
 	CircLinkedList() {size = 0; head = nullptr;}
+	CircLinkedList(int n) 
+	{
+		size = 0; head = nullptr; 
+		for (int i = 1; i <= n; i++) append(i);
+	}
 	~CircLinkedList() {while (size) pop(0); /*delete head;*/}
 
 	void insert(int val, int idx)
@@ -79,7 +85,30 @@ public:
 	}
 
 	int length() {return size;}
+
+	int &operator[](int idx)
+	{
+		if (idx < 0 || !size) throw out_of_range("IndexError");
+		idx %= size;
+		Node *cur = head;
+		while (idx--);
+		return cur->val;
+	}
+
+	vector<int> josephus_sequence(int k)
+	{
+		vector<int> seq;
+		for (int i = k; size; i += k)
+			seq.push_back(pop(i));
+		return seq;
+	}
 };
+
+int last_man_standing(int n, int k)
+{
+	CircLinkedList clist(n);
+	return clist.josephus_sequence(k).back();
+}
 
 int main()
 {
@@ -92,5 +121,8 @@ int main()
 	clist.append(4);
 	clist.print();
 	
+	int n = 68, k = 7;
+	printf("The solution to the Josephus problem for n = %d and k = %d is %d.\n", n, k, last_man_standing(n,k));
+
 	return 0;
 }

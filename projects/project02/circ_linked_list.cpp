@@ -50,7 +50,6 @@ public:
 
 	int pop(int idx)
 	{
-		printf("pop: size=%d\n",size);
 		if (idx < 0 || size == 0) throw out_of_range("IndexError");
 		idx %= size;
 		Node *cur = head;
@@ -58,6 +57,7 @@ public:
 		int val = cur->val;
 		cur->prev->next = cur->next;
 		cur->next->prev = cur->prev;
+		if (idx == -1) head = cur->next;
 		delete cur;
 		size--;
 		if (!size) head = nullptr;
